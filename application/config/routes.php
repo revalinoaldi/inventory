@@ -70,3 +70,5 @@ $route['lap/customer'] = "C_laporan/lap_customer";
 $route['lap/barang'] = "C_laporan/lap_barang";
 $route['lap/trmasuk'] = "C_laporan/lap_tr_barang_masuk";
 $route['lap/trkeluar'] = "C_laporan/lap_tr_barang_keluar";
+$route['lap/eoq'] = "C_laporan/eoq";
+

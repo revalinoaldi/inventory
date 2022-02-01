@@ -121,6 +121,7 @@ class M_barang extends CI_Model {
         if(!empty($tgl_awal) && !empty($tgl_akhir)){
             $this->db->where('tgl_tr_m BETWEEN "'. date('Y-m-d', strtotime($tgl_awal)). '" and "'. date('Y-m-d', strtotime($tgl_akhir)).'"');
         }
+        $this->db->order_by('tgl_tr_m', 'asc');
         $qr = $this->db->get();
         return $qr->result();
     }
@@ -132,6 +133,28 @@ class M_barang extends CI_Model {
         $this->db->where('kd_barang',$kd_barang);
         $qr = $this->db->get();
         return $qr->result();
+    }
+
+    public function get_sum_barang_kd2($kd_barang,$tgl)
+    {
+        $this->db->select('SUM(jumlah_masuk) AS total');
+        $this->db->from('tr_barang_masuk_dtl');
+        $this->db->where('kd_barang',$kd_barang);
+        if (count($tgl) > 0) {
+            $this->db->where($tgl);
+        }
+        return $qr = $this->db->get()->row()->total;
+    }
+
+    public function get_sum_barang_kd1($kd_barang,$tgl)
+    {
+        $this->db->select('SUM(jumlah_keluar) AS total');
+        $this->db->from('v_dtl_keluar');
+        $this->db->where('kd_barang',$kd_barang);
+        if (count($tgl) > 0) {
+            $this->db->where($tgl);
+        }
+        return $qr = $this->db->get()->row()->total;
     }
 
     public function get_barang_by_kd($kd_barang)
@@ -187,6 +210,7 @@ class M_barang extends CI_Model {
         if(!empty($tgl_awal) && !empty($tgl_akhir)){
             $this->db->where('tgl_tr_k BETWEEN "'. date('Y-m-d', strtotime($tgl_awal)). '" and "'. date('Y-m-d', strtotime($tgl_akhir)).'"');
         }
+        $this->db->order_by('tgl_tr_k', 'asc');
         $qr = $this->db->get();
         return $qr->result();
     }
@@ -199,6 +223,15 @@ class M_barang extends CI_Model {
         $this->db->where('a.id_tr_k',$id_tr_k);
         $get = $this->db->get();
         return $get->result();
+    }
+
+    public function get_detail_b_keluar($id_tr_k)
+    {
+        $this->db->select('*');
+        $this->db->from('tr_barang_keluar_beli a');
+        $this->db->join('ms_barang b','a.kd_barang=b.kd_barang');
+        $this->db->where('a.id_tr_k',$id_tr_k);
+        return $get = $this->db->get();
     }
 
     public function get_detail_jual($id_tr_k,$kd_barang)

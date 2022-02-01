@@ -36,10 +36,9 @@
                     <th>Tgl Tr Keluar</th>
                     <th>Ket</th>
                     <th>Input Oleh</th>
-                    
+                    <th>Jumlah</th>
                 </tr>
                 </thead>
-
 
                 <tbody>
                 <?php $no = 1; foreach ($get_penjualan as $val) { ?>
@@ -49,7 +48,7 @@
                         <td><?php echo $val->tgl_tr_k; ?></td>
                         <td><?php echo $val->ket_tr_k; ?></td>
                         <td><?php echo $val->username;?></td>
-                       
+                        <td><?php echo $val->jumlah_beli;?></td>
                     </tr>
                 <?php }?>
                 </tbody>

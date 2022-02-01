@@ -31,25 +31,35 @@
                 <thead>
                 <tr>
                     <th>No</th>
-                    <th>ID Tr Keluar</th>
-                    <th>Tgl Tr Keluar</th>
-                    <th>Ket</th>
-                    <th>Input Oleh</th>
-                    <th>Jumlah</th>
+                    <th>Nama Barang</th>
+                    <th>Harga Barang</th>
+                    <th>Total Pembelian</th>
+                    <th>Pemakaian Tahunan</th>
+                    <th>Biaya Pesan</th>
+                    <th>Biaya Simpan</th>
+                    <th>EOQ</th>
                 </tr>
                 </thead>
 
 
                 <tbody>
-                <?php $no = 1; foreach ($get_penjualan as $val) { ?>
+                <?php $no = 1; foreach ($barang as $val) { ?>
                     <tr>
                         <td><?php echo $no++; ?></td>
-                        <td><?php echo $val->id_tr_k;?></td>
-                        <td><?php echo $val->tgl_tr_k; ?></td>
-                        <td><?php echo $val->ket_tr_k; ?></td>
-                        <td><?php echo $val->username;?></td>
-                        <td><?php echo $val->jumlah_beli;?></td>
-                       
+                        <td><?php echo $val->nama_barang;?></td>
+                        <td>Rp <?php echo number_format($val->harga_barang);?></td>
+                        <td><?php echo $val->totalMasuk; ?></td>
+                        <td><?php echo $val->total; ?></td>
+                        <td><?php echo number_format($val->harga_barang*10/100); ?></td>
+                        <td>Rp <?php echo number_format(($val->harga_barang*2/100));?></td>
+                        <?php  
+                            $a = $val->harga_barang*10/100;
+                            $d = $val->total;
+                            $h = $val->harga_barang*2/100;
+
+                            $eoq = round(sqrt((2*$a*$d)/$h));
+                        ?>
+                        <td><?php echo $eoq;?></td>
                     </tr>
                 <?php }?>
                 </tbody>

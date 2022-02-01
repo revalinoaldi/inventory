@@ -54,7 +54,52 @@ class C_laporan extends CI_Controller {
             $tgl_awal = $this->input->get('tgl_awal');
             $tgl_akhir = $this->input->get('tgl_akhir');
         }
-        $data['get_penjualan'] = $this->M_barang->get_tr_jual_barang($tgl_awal,$tgl_akhir);
+        $result = $this->M_barang->get_tr_jual_barang($tgl_awal,$tgl_akhir);
+        $resq;
+        foreach ($result as $res) {
+            $resCount = $this->M_barang->get_detail_b_keluar($res->id_tr_k)->row();
+            $res->jumlah_beli = $resCount->jumlah_beli;
+            $resq[] = $res;
+        }
+
+        $data['get_penjualan'] = $resq;
+        $this->load->view('v_masterpage',$data);
+    }
+
+    public function eoq()
+    {
+        $data['title'] = "Laporan Transaksi Barang Keluar";
+        $data['content'] = "v_lap_eoq";
+        $tglBarang = [
+            'tgl_tr_k >=' => date('Y-01-1', strtotime('-1 years')),
+            'tgl_tr_k <=' => date('Y-12-t', strtotime('-1 years')),
+        ];
+        $tglBarangMasuk = [
+            'tgl_masuk >=' => date('Y-01-1', strtotime('-1 years')),
+            'tgl_masuk <=' => date('Y-12-t', strtotime('-1 years')),
+        ];
+         if(isset($_GET['tgl_awal']) && isset($_GET['tgl_akhir'])){
+            $tglBarang = [
+                'tgl_tr_k >=' => date('Y-m-d', strtotime($this->input->get('tgl_awal'))),
+                'tgl_tr_k <=' => date('Y-m-d', strtotime($this->input->get('tgl_akhir'))),
+            ];
+
+            $tglBarangMasuk = [
+                'tgl_masuk >=' => date('Y-m-d', strtotime($this->input->get('tgl_awal'))),
+                'tgl_masuk <=' => date('Y-m-d', strtotime($this->input->get('tgl_akhir'))),
+            ];
+        }
+
+        $barang = $this->M_barang->get_barang();
+        $resBarang;
+        foreach ($barang as $res) {
+            
+            $res->total = $this->M_barang->get_sum_barang_kd1($res->kd_barang,$tglBarang);
+            $res->totalMasuk = $this->M_barang->get_sum_barang_kd2($res->kd_barang,$tglBarangMasuk);
+            $resBarang[] = $res;
+        }
+
+        $data['barang'] = $resBarang;
         $this->load->view('v_masterpage',$data);
     }
 
@@ -137,7 +182,15 @@ class C_laporan extends CI_Controller {
             $tgl_awal = $this->input->get('tgl_awal');
             $tgl_akhir = $this->input->get('tgl_akhir');
         }
-        $data['get_penjualan'] = $this->M_barang->get_tr_jual_barang($tgl_awal,$tgl_akhir);
+        $result = $this->M_barang->get_tr_jual_barang($tgl_awal,$tgl_akhir);
+        $resq;
+        foreach ($result as $res) {
+            $resCount = $this->M_barang->get_detail_b_keluar($res->id_tr_k)->row();
+            $res->jumlah_beli = $resCount->jumlah_beli;
+            $resq[] = $res;
+        }
+
+        $data['get_penjualan'] = $resq;
 		$html = $this->load->view('v_cetak_trkeluar', $data, TRUE);
         $mpdf->WriteHTML($html);
         

@@ -68,6 +68,7 @@
                                 <li><a href="<?php echo base_url('lap/barang')?>" class="<?php if($this->uri->segment(2) == "lap" && $this->uri->segment(3) == "barang"){echo "active";}?>">Lap Barang</a></li>
                                 <li><a href="<?php echo base_url('lap/trmasuk')?>" class="<?php if($this->uri->segment(2) == "lap" && $this->uri->segment(3) == "trmasuk"){echo "active";}?>">Lap Tr Barang Masuk</a></li>
                                 <li><a href="<?php echo base_url('lap/trkeluar')?>" class="<?php if($this->uri->segment(2) == "lap" && $this->uri->segment(3) == "trkeluar"){echo "active";}?>">Lap Tr Barang Keluar</a></li>
+                                <li><a href="<?php echo base_url('lap/eoq')?>" class="<?php if($this->uri->segment(2) == "lap" && $this->uri->segment(3) == "trkeluar"){echo "active";}?>">Economic Order Quantity</a></li>
                             </ul>
                         </li>
                     <?php } ?>
